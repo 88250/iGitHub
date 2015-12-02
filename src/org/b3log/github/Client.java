@@ -21,7 +21,7 @@ import org.json.JSONObject;
  * GitHub client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Dec 14, 2014
+ * @version 1.0.1.4, Dec 2, 2015
  */
 public class Client {
 
@@ -74,7 +74,7 @@ public class Client {
         final Console cons = System.console();
         System.out.print("Please input your password: ");
         final String password = new String(cons.readPassword());
-        String authStr = USER_NAME + ':' + "xxxxxx";
+        String authStr = USER_NAME + ':' + password;
 
         authStr = Base64.encodeBytes(authStr.getBytes());
 
@@ -94,7 +94,7 @@ public class Client {
             System.out.println();
 
             String content = IOUtils.toString(entity.getContent(), "UTF-8");
-
+            
             final JSONArray json = new JSONArray(content);
             System.out.println("<ul>");
 
