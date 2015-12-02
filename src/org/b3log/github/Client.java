@@ -83,7 +83,7 @@ public class Client {
 
         try {
             final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/issues?"
-                                                + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc");
+                    + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc");
             httpGet.addHeader("Authorization", "Basic " + authStr);
 
             System.out.println();
@@ -94,7 +94,7 @@ public class Client {
             System.out.println();
 
             String content = IOUtils.toString(entity.getContent(), "UTF-8");
-            
+
             final JSONArray json = new JSONArray(content);
             System.out.println("<ul>");
 
@@ -150,7 +150,7 @@ public class Client {
                         break;
                     default:
                         System.err.println("The label [" + startIssueName + ", issue=" + issue.getString("number")
-                                                        + "] invalid");
+                                + "] invalid");
                 }
             }
 
