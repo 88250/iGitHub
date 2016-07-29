@@ -20,8 +20,8 @@ import org.json.JSONObject;
 /**
  * GitHub client.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Dec 2, 2015
+ * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
+ * @version 1.0.2.4, Jul 29, 2016
  */
 public class Client {
 
@@ -81,79 +81,91 @@ public class Client {
         //Runtime.getRuntime().exec("ipconfig /flushdns");
         final DefaultHttpClient httpClient = new DefaultHttpClient();
 
+        final StringBuilder bugBuilder = new StringBuilder();
+        final StringBuilder featureBuilder = new StringBuilder();
+        final StringBuilder enhancementBuilder = new StringBuilder();
+        final StringBuilder developmentBuilder = new StringBuilder();
+        final StringBuilder skinBuilder = new StringBuilder();
+
         try {
-            final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/issues?"
-                    + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc");
-            httpGet.addHeader("Authorization", "Basic " + authStr);
-
-            System.out.println();
             System.out.println("Retriving issues....");
-            final HttpResponse response = httpClient.execute(httpGet);
-
-            HttpEntity entity = response.getEntity();
             System.out.println();
+            int page = 1;
+            int count = 0;
+            while (true) {
+                final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/issues?"
+                        + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc&page=" + page);
+                page++;
 
-            String content = IOUtils.toString(entity.getContent(), "UTF-8");
+                httpGet.addHeader("Authorization", "Basic " + authStr);
 
-            final JSONArray json = new JSONArray(content);
-            System.out.println("<ul>");
+                final HttpResponse response = httpClient.execute(httpGet);
 
-            final StringBuilder bugBuilder = new StringBuilder();
-            final StringBuilder featureBuilder = new StringBuilder();
-            final StringBuilder enhancementBuilder = new StringBuilder();
-            final StringBuilder developmentBuilder = new StringBuilder();
-            final StringBuilder skinBuilder = new StringBuilder();
+                HttpEntity entity = response.getEntity();
+                String content = IOUtils.toString(entity.getContent(), "UTF-8");
 
-            for (int i = 0; i < json.length(); i++) {
-                final JSONObject issue = json.getJSONObject(i);
-                final JSONArray labels = issue.getJSONArray("labels");
-
-                final StringBuilder liBuilder = new StringBuilder();
-                String startIssueName = "default";
-
-                final StringBuilder labelBuilder = new StringBuilder();
-                for (int j = 0; j < labels.length(); j++) {
-                    labelBuilder.append("<span style='");
-                    final JSONObject label = labels.getJSONObject(j);
-                    final String color = label.getString("color");
-                    final String name = label.getString("name");
-
-                    startIssueName = getStartLabelName(name, startIssueName);
-
-                    labelBuilder.append("background: #").append(color).append(" !important;color:#FFFFFF !important;padding: 1px 4px;'>").
-                            append(name).append("</span>");
-
-                    if (j < labels.length() - 1) {
-                        labelBuilder.append("&nbsp;");
-                    }
+                final JSONArray json = new JSONArray(content);
+                if (json.length() < 1) {
+                    break;
                 }
 
-                liBuilder.append("    <li><a href=\"").append(issue.getString("html_url")).append("\">").
-                        append(issue.getString("number")).append(' ').append(issue.getString("title")).
-                        append("</a>&nbsp;").append(labelBuilder.toString()).append("</li>").append("\n");
+                for (int i = 0; i < json.length(); i++) {
+                    final JSONObject issue = json.getJSONObject(i);
+                    final JSONArray labels = issue.getJSONArray("labels");
 
-                switch (startIssueName) {
-                    case "feature":
-                        featureBuilder.append(liBuilder.toString());
-                        break;
-                    case "bug":
-                        bugBuilder.append(liBuilder.toString());
-                        break;
-                    case "skin":
-                        skinBuilder.append(liBuilder.toString());
-                        break;
-                    case "enhancement":
-                        enhancementBuilder.append(liBuilder.toString());
-                        break;
-                    case "development":
-                        developmentBuilder.append(liBuilder.toString());
-                        break;
-                    default:
-                        System.err.println("The label [" + startIssueName + ", issue=" + issue.getString("number")
-                                + "] invalid");
+                    final StringBuilder liBuilder = new StringBuilder();
+                    String startIssueName = "default";
+
+                    final StringBuilder labelBuilder = new StringBuilder();
+                    for (int j = 0; j < labels.length(); j++) {
+                        labelBuilder.append("<span style='");
+                        final JSONObject label = labels.getJSONObject(j);
+                        final String color = label.getString("color");
+                        final String name = label.getString("name");
+
+                        startIssueName = getStartLabelName(name, startIssueName);
+
+                        labelBuilder.append("background: #").append(color).append(" !important;color:#FFFFFF !important;padding: 1px 4px;'>").
+                                append(name).append("</span>");
+
+                        if (j < labels.length() - 1) {
+                            labelBuilder.append("&nbsp;");
+                        }
+                    }
+
+                    liBuilder.append("    <li><a href=\"").append(issue.getString("html_url")).append("\">").
+                            append(issue.getString("number")).append(' ').append(issue.getString("title")).
+                            append("</a>&nbsp;").append(labelBuilder.toString()).append("</li>").append("\n");
+
+                    switch (startIssueName) {
+                        case "feature":
+                            featureBuilder.append(liBuilder.toString());
+                            count++;
+                            break;
+                        case "bug":
+                            bugBuilder.append(liBuilder.toString());
+                            count++;
+                            break;
+                        case "skin":
+                            skinBuilder.append(liBuilder.toString());
+                            count++;
+                            break;
+                        case "enhancement":
+                            enhancementBuilder.append(liBuilder.toString());
+                            count++;
+                            break;
+                        case "development":
+                            developmentBuilder.append(liBuilder.toString());
+                            count++;
+                            break;
+                        default:
+                            System.err.println("The label [" + startIssueName + ", issue=" + issue.getString("number")
+                                    + "] invalid");
+                    }
                 }
             }
 
+            System.out.println("<ul>");
             if (featureBuilder.length() > 0) {
                 featureBuilder.deleteCharAt(featureBuilder.length() - 1);
                 System.out.println(featureBuilder.toString());
@@ -180,7 +192,7 @@ public class Client {
             }
 
             System.out.println("</ul>");
-            System.out.println(json.length() + " issues totally.");
+            System.out.println(count + " issues totally.");
 
             // printResponseHeader(response);
             // printResponseContent(entity);
