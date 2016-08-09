@@ -191,7 +191,7 @@ public class Client {
                 System.out.println(developmentBuilder.toString());
             }
 
-            System.out.println("</ul>");
+            System.out.println("\n</ul>");
             System.out.println(count + " issues totally.");
 
             // printResponseHeader(response);
