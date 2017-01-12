@@ -21,7 +21,7 @@ import org.json.JSONObject;
  * GitHub client.
  *
  * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
- * @version 1.0.2.4, Jul 29, 2016
+ * @version 1.1.2.4, Jan 12, 2017
  */
 public class Client {
 
@@ -33,7 +33,8 @@ public class Client {
         issueNameSort.put("skin", 2);
         issueNameSort.put("enhancement", 3);
         issueNameSort.put("development", 4);
-        issueNameSort.put("default", 5);
+        issueNameSort.put("crazy", 5);
+        issueNameSort.put("default", 6);
     }
 
     private static final String MILESTONE_NUM;
