@@ -21,20 +21,21 @@ import org.json.JSONObject;
  * GitHub client.
  *
  * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
- * @version 1.1.2.4, Jan 12, 2017
+ * @version 1.1.2.5, May 25, 2017
  */
 public class Client {
 
     private static final Map<String, Integer> issueNameSort = new HashMap<>();
 
     static {
-        issueNameSort.put("feature", 0);
-        issueNameSort.put("bug", 1);
-        issueNameSort.put("skin", 2);
-        issueNameSort.put("enhancement", 3);
-        issueNameSort.put("development", 4);
-        issueNameSort.put("crazy", 5);
-        issueNameSort.put("default", 6);
+        issueNameSort.put("crazy", 0);
+        issueNameSort.put("feature", 1);
+        issueNameSort.put("enhancement", 2);
+        issueNameSort.put("skin", 3);
+        issueNameSort.put("doc", 4);
+        issueNameSort.put("development", 5);
+        issueNameSort.put("bug", 6);
+        issueNameSort.put("default", 7);
     }
 
     private static final String MILESTONE_NUM;
@@ -86,6 +87,7 @@ public class Client {
         final StringBuilder featureBuilder = new StringBuilder();
         final StringBuilder enhancementBuilder = new StringBuilder();
         final StringBuilder developmentBuilder = new StringBuilder();
+        final StringBuilder docBuilder = new StringBuilder();
         final StringBuilder skinBuilder = new StringBuilder();
 
         try {
@@ -159,6 +161,10 @@ public class Client {
                             developmentBuilder.append(liBuilder.toString());
                             count++;
                             break;
+                        case "doc":
+                            docBuilder.append(liBuilder.toString());
+                            count++;
+                            break;
                         default:
                             System.err.println("The label [" + startIssueName + ", issue=" + issue.getString("number")
                                     + "] invalid");
@@ -172,24 +178,29 @@ public class Client {
                 System.out.println(featureBuilder.toString());
             }
 
-            if (bugBuilder.length() > 0) {
-                bugBuilder.deleteCharAt(bugBuilder.length() - 1);
-                System.out.println(bugBuilder.toString());
-            }
-
-            if (skinBuilder.length() > 0) {
-                skinBuilder.deleteCharAt(skinBuilder.length() - 1);
-                System.out.printf(skinBuilder.toString());
-            }
-
             if (enhancementBuilder.length() > 0) {
                 enhancementBuilder.deleteCharAt(enhancementBuilder.length() - 1);
                 System.out.println(enhancementBuilder.toString());
             }
 
+            if (skinBuilder.length() > 0) {
+                skinBuilder.deleteCharAt(skinBuilder.length() - 1);
+                System.out.println(skinBuilder.toString());
+            }
+
+            if (docBuilder.length() > 0) {
+                docBuilder.deleteCharAt(docBuilder.length() - 1);
+                System.out.println(docBuilder.toString());
+            }
+
             if (developmentBuilder.length() > 0) {
                 developmentBuilder.deleteCharAt(developmentBuilder.length() - 1);
                 System.out.println(developmentBuilder.toString());
+            }
+
+            if (bugBuilder.length() > 0) {
+                bugBuilder.deleteCharAt(bugBuilder.length() - 1);
+                System.out.println(bugBuilder.toString());
             }
 
             System.out.println("</ul>");
