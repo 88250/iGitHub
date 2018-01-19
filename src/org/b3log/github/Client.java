@@ -21,7 +21,7 @@ import org.json.JSONObject;
  * GitHub client.
  *
  * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
- * @version 1.1.2.5, May 25, 2017
+ * @version 1.2.0.0, Jan 19, 2018
  */
 public class Client {
 
@@ -30,12 +30,13 @@ public class Client {
     static {
         issueNameSort.put("crazy", 0);
         issueNameSort.put("feature", 1);
-        issueNameSort.put("enhancement", 2);
-        issueNameSort.put("skin", 3);
-        issueNameSort.put("doc", 4);
-        issueNameSort.put("development", 5);
-        issueNameSort.put("bug", 6);
-        issueNameSort.put("default", 7);
+        issueNameSort.put("skin", 2);
+        issueNameSort.put("theme", 3);
+        issueNameSort.put("enhancement", 4);
+        issueNameSort.put("doc", 5);
+        issueNameSort.put("development", 6);
+        issueNameSort.put("bug", 7);
+        issueNameSort.put("default", 8);
     }
 
     private static final String MILESTONE_NUM;
@@ -89,6 +90,7 @@ public class Client {
         final StringBuilder developmentBuilder = new StringBuilder();
         final StringBuilder docBuilder = new StringBuilder();
         final StringBuilder skinBuilder = new StringBuilder();
+        final StringBuilder themeBuilder = new StringBuilder();
 
         try {
             System.out.println("Retriving issues....");
@@ -153,6 +155,10 @@ public class Client {
                             skinBuilder.append(liBuilder.toString());
                             count++;
                             break;
+                        case "theme":
+                            themeBuilder.append(liBuilder.toString());
+                            count++;
+                            break;
                         case "enhancement":
                             enhancementBuilder.append(liBuilder.toString());
                             count++;
@@ -178,14 +184,19 @@ public class Client {
                 System.out.println(featureBuilder.toString());
             }
 
-            if (enhancementBuilder.length() > 0) {
-                enhancementBuilder.deleteCharAt(enhancementBuilder.length() - 1);
-                System.out.println(enhancementBuilder.toString());
-            }
-
             if (skinBuilder.length() > 0) {
                 skinBuilder.deleteCharAt(skinBuilder.length() - 1);
                 System.out.println(skinBuilder.toString());
+            }
+
+            if (themeBuilder.length() > 0) {
+                themeBuilder.deleteCharAt(themeBuilder.length() - 1);
+                System.out.println(themeBuilder.toString());
+            }
+
+            if (enhancementBuilder.length() > 0) {
+                enhancementBuilder.deleteCharAt(enhancementBuilder.length() - 1);
+                System.out.println(enhancementBuilder.toString());
             }
 
             if (docBuilder.length() > 0) {
