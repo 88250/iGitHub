@@ -75,9 +75,7 @@ public class Client {
     }
 
     public static void main(final String[] args) throws Exception {
-        System.out.print("Please input your password: " + args[0]);
         String authStr = USER_NAME + ':' + args[0];
-
         authStr = Base64.getEncoder().encodeToString(authStr.getBytes());
 
         //Runtime.getRuntime().exec("ipconfig /flushdns");

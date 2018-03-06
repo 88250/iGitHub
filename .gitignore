@@ -12,9 +12,8 @@ pipe
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# Theme
-/theme/node_modules
-/theme/x/*/js/*.js.map
+# Maven
+target/
 
 # IDE
 .idea/
