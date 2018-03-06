@@ -1,27 +1,28 @@
 package org.b3log.github;
 
-import java.io.Console;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
-import net.iharder.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+
 /**
  * GitHub client.
  *
  * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
- * @version 1.2.0.0, Jan 19, 2018
+ * @version 2.0.0.0, Mar 6, 2018
  */
 public class Client {
 
@@ -73,16 +74,14 @@ public class Client {
 //        }
     }
 
-    public static void main(String[] args) throws Exception {
-        final Console cons = System.console();
-        System.out.print("Please input your password: ");
-        final String password = new String(cons.readPassword());
-        String authStr = USER_NAME + ':' + password;
+    public static void main(final String[] args) throws Exception {
+        System.out.print("Please input your password: " + args[0]);
+        String authStr = USER_NAME + ':' + args[0];
 
-        authStr = Base64.encodeBytes(authStr.getBytes());
+        authStr = Base64.getEncoder().encodeToString(authStr.getBytes());
 
         //Runtime.getRuntime().exec("ipconfig /flushdns");
-        final DefaultHttpClient httpClient = new DefaultHttpClient();
+        final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
         final StringBuilder bugBuilder = new StringBuilder();
         final StringBuilder featureBuilder = new StringBuilder();
@@ -139,7 +138,7 @@ public class Client {
                     }
 
                     liBuilder.append("    <li><a href=\"").append(issue.getString("html_url")).append("\">").
-                            append(issue.getString("number")).append(' ').append(issue.getString("title")).
+                            append(issue.optString("number")).append(' ').append(issue.getString("title")).
                             append("</a>&nbsp;").append(labelBuilder.toString()).append("</li>").append("\n");
 
                     switch (startIssueName) {
