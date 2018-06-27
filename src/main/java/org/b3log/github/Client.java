@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
  * GitHub client.
  *
  * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
- * @version 2.0.0.0, Mar 6, 2018
+ * @version 2.0.0.1, Jun 27, 2018
  */
 public class Client {
 
@@ -136,8 +136,8 @@ public class Client {
                     }
 
                     liBuilder.append("    <li><a href=\"").append(issue.getString("html_url")).append("\">").
-                            append(issue.optString("number")).append(' ').append(issue.getString("title")).
-                            append("</a>&nbsp;").append(labelBuilder.toString()).append("</li>").append("\n");
+                            append(issue.optString("number")).append("</a> ").
+                            append(issue.getString("title")).append(" ").append(labelBuilder.toString()).append("</li>").append("\n");
 
                     switch (startIssueName) {
                         case "feature":
