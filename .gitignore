@@ -4,7 +4,6 @@
 *.so
 *.dylib
 header
-pipe
 
 # Test binary, build with `go test -c`
 *.test
@@ -17,4 +16,4 @@ target/
 
 # IDE
 .idea/
-
+github.iml
