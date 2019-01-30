@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
  * GitHub client.
  *
  * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
- * @version 2.0.0.1, Jun 27, 2018
+ * @version 2.0.0.2, Jan 30, 2019
  */
 public class Client {
 
@@ -47,31 +47,28 @@ public class Client {
     private static final String USER_NAME;
 
     private static final String ISSUE_STATE;
-    //private static final String PROXY_HOST;
-    //private static final String PROXY_PORT;
 
     static {
-        REPOS = ResourceBundle.getBundle("issues").getString("repos");
-        MILESTONE_NUM = ResourceBundle.getBundle("issues").getString("milestoneNum");
-        ISSUE_STATE = ResourceBundle.getBundle("issues").getString("issue.state");
-
-        USER_NAME = ResourceBundle.getBundle("issues").getString("username");
+        final ResourceBundle conf = ResourceBundle.getBundle("issues");
+        REPOS = conf.getString("repos");
+        MILESTONE_NUM = conf.getString("milestoneNum");
+        ISSUE_STATE = conf.getString("issue.state");
+        USER_NAME = conf.getString("username");
 
         System.out.println("Repository: " + REPOS);
         System.out.println("Version Num: " + MILESTONE_NUM);
         System.out.println("Issue State: " + ISSUE_STATE);
 
-//        PROXY_HOST = ResourceBundle.getBundle("issues").getString("proxy.host");
-//        PROXY_PORT = ResourceBundle.getBundle("issues").getString("proxy.port");
-//
-//        if (null != PROXY_HOST && !"".equals(PROXY_HOST)
-//            && null != PROXY_PORT && !"".equals(PROXY_PORT)) {
-//            System.out.println("Configured proxy[host=" + PROXY_HOST + ", port=" + PROXY_PORT + "]");
-//
-//            System.getProperties().put("proxySet", "true");
-//            System.getProperties().put("proxyHost", "127.0.0.1");
-//            System.getProperties().put("proxyPort", "8087");
-//        }
+        if (conf.containsKey("proxy.host") && conf.containsKey("proxy.port")) {
+            final String proxyHost = conf.getString("proxy.host");
+            final String proxyPort = conf.getString("proxy.port");
+            if (!"".equals(proxyHost) && !"".equals(proxyPort)) {
+                System.getProperties().put("proxySet", "true");
+                System.getProperties().put("socksProxyHost", proxyHost);
+                System.getProperties().put("socksProxyPort", proxyPort);
+                System.out.println("Configured proxy [host=" + proxyHost + ", port=" + proxyPort + "]");
+            }
+        }
     }
 
     public static void main(final String[] args) throws Exception {
