@@ -19,9 +19,9 @@ import java.util.ResourceBundle;
  * GitHub client.
  *
  * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
- * @version 3.0.0.0, Jan 4, 2020
+ * @version 3.0.0.1, Mar 24, 2020
  */
-public class Client {
+public final class Client {
 
     private static final String MILESTONE_NUM;
     private static final String REPOS;
@@ -76,7 +76,7 @@ public class Client {
             final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/issues?"
                     + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc&page=" + page);
             page++;
-            httpGet.addHeader("Authorization", "Basic " + authStr);
+            //httpGet.addHeader("Authorization", "Basic " + authStr);
             final HttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             String content = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
