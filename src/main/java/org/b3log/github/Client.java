@@ -57,7 +57,7 @@ public final class Client {
         String authStr = USER_NAME + ':' + args[0];
         authStr = Base64.getEncoder().encodeToString(authStr.getBytes());
 
-        //Runtime.getRuntime().exec("ipconfig /flushdns");
+        Runtime.getRuntime().exec("ipconfig /flushdns");
         final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
         final StringBuilder bugBuilder = new StringBuilder();
