@@ -39,23 +39,20 @@ public final class Client {
         System.out.println("Version Num: " + MILESTONE_NUM);
         System.out.println("Issue State: " + ISSUE_STATE);
 
-        if (conf.containsKey("proxy.host") && conf.containsKey("proxy.port")) {
-            final String proxyHost = conf.getString("proxy.host");
-            final String proxyPort = conf.getString("proxy.port");
-            if (!"".equals(proxyHost) && !"".equals(proxyPort)) {
-                System.getProperties().put("proxySet", "true");
-                System.getProperties().put("socksProxyHost", proxyHost);
-                System.getProperties().put("socksProxyPort", proxyPort);
-                System.out.println("Configured proxy [host=" + proxyHost + ", port=" + proxyPort + "]");
-            }
-        }
+//        if (conf.containsKey("proxy.host") && conf.containsKey("proxy.port")) {
+//            final String proxyHost = conf.getString("proxy.host");
+//            final String proxyPort = conf.getString("proxy.port");
+//            if (!"".equals(proxyHost) && !"".equals(proxyPort)) {
+//                System.getProperties().put("proxySet", "true");
+//                System.getProperties().put("socksProxyHost", proxyHost);
+//                System.getProperties().put("socksProxyPort", proxyPort);
+//                System.out.println("Configured proxy [host=" + proxyHost + ", port=" + proxyPort + "]");
+//            }
+//        }
     }
 
     public static void main(final String[] args) throws Exception {
         loadLables();
-
-        String authStr = USER_NAME + ':' + args[0];
-        authStr = Base64.getEncoder().encodeToString(authStr.getBytes());
 
         Runtime.getRuntime().exec("ipconfig /flushdns");
         final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
@@ -76,7 +73,7 @@ public final class Client {
             final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/issues?"
                     + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc&page=" + page);
             page++;
-            //httpGet.addHeader("Authorization", "Basic " + authStr);
+            //httpGet.addHeader("Authorization", "Token " + "");
             final HttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             String content = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
