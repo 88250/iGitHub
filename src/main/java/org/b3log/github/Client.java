@@ -39,16 +39,16 @@ public final class Client {
         System.out.println("Version Num: " + MILESTONE_NUM);
         System.out.println("Issue State: " + ISSUE_STATE);
 
-//        if (conf.containsKey("proxy.host") && conf.containsKey("proxy.port")) {
-//            final String proxyHost = conf.getString("proxy.host");
-//            final String proxyPort = conf.getString("proxy.port");
-//            if (!"".equals(proxyHost) && !"".equals(proxyPort)) {
-//                System.getProperties().put("proxySet", "true");
-//                System.getProperties().put("socksProxyHost", proxyHost);
-//                System.getProperties().put("socksProxyPort", proxyPort);
-//                System.out.println("Configured proxy [host=" + proxyHost + ", port=" + proxyPort + "]");
-//            }
-//        }
+        if (conf.containsKey("proxy.host") && conf.containsKey("proxy.port")) {
+            final String proxyHost = conf.getString("proxy.host");
+            final String proxyPort = conf.getString("proxy.port");
+            if (!"".equals(proxyHost) && !"".equals(proxyPort)) {
+                System.getProperties().put("proxySet", "true");
+                System.getProperties().put("socksProxyHost", proxyHost);
+                System.getProperties().put("socksProxyPort", proxyPort);
+                System.out.println("Configured proxy [host=" + proxyHost + ", port=" + proxyPort + "]");
+            }
+        }
     }
 
     public static void main(final String[] args) throws Exception {
