@@ -25,7 +25,6 @@ public final class Client {
 
     private static final String MILESTONE_NUM;
     private static final String REPOS;
-    private static final String USER_NAME;
     private static final String ISSUE_STATE;
 
     static {
@@ -33,7 +32,6 @@ public final class Client {
         REPOS = conf.getString("repos");
         MILESTONE_NUM = conf.getString("milestoneNum");
         ISSUE_STATE = conf.getString("issue.state");
-        USER_NAME = conf.getString("username");
 
         System.out.println("Repository: " + REPOS);
         System.out.println("Version Num: " + MILESTONE_NUM);
