@@ -26,6 +26,7 @@ public final class Client {
     private static final String MILESTONE_NUM;
     private static final String REPOS;
     private static final String ISSUE_STATE;
+    private static String PAT;
 
     static {
         final ResourceBundle conf = ResourceBundle.getBundle("issues");
@@ -50,6 +51,8 @@ public final class Client {
     }
 
     public static void main(final String[] args) throws Exception {
+        PAT = args[0];
+
         loadLables();
 
         Runtime.getRuntime().exec("ipconfig /flushdns");
@@ -71,7 +74,7 @@ public final class Client {
             final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/issues?"
                     + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc&page=" + page);
             page++;
-            //httpGet.addHeader("Authorization", "Token " + "");
+            httpGet.addHeader("Authorization", "Token " + PAT);
             final HttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             String content = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
@@ -167,6 +170,7 @@ public final class Client {
         System.out.println("Loading labels....");
         final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/labels");
+        httpGet.addHeader("Authorization", "Token " + PAT);
         final HttpResponse response = httpClient.execute(httpGet);
         final HttpEntity entity = response.getEntity();
         final String content = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
@@ -176,6 +180,7 @@ public final class Client {
     private static String getVersion() throws Exception {
         final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/milestones/" + MILESTONE_NUM);
+        httpGet.addHeader("Authorization", "Token " + PAT);
         final HttpResponse response = httpClient.execute(httpGet);
         final HttpEntity entity = response.getEntity();
         final String content = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
