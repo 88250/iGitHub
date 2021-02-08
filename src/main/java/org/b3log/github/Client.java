@@ -89,10 +89,12 @@ public final class Client {
                 final StringBuilder liBuilder = new StringBuilder().append("* [").append(issue.getString("title")).append("](").append(issue.getString("html_url")).append(")\n");
                 switch (label) {
                     case "引入特性":
+                    case "feature":
                         featureBuilder.append(liBuilder.toString());
                         count++;
                         break;
                     case "修复缺陷":
+                    case "bug":
                         bugBuilder.append(liBuilder.toString());
                         count++;
                         break;
@@ -105,14 +107,17 @@ public final class Client {
                         count++;
                         break;
                     case "改进功能":
+                    case "Enhancement":
                         enhancementBuilder.append(liBuilder.toString());
                         count++;
                         break;
                     case "开发重构":
+                    case "Refactor":
                         developmentBuilder.append(liBuilder.toString());
                         count++;
                         break;
                     case "文档相关":
+                    case "Document":
                         docBuilder.append(liBuilder.toString());
                         count++;
                         break;
