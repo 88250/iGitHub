@@ -15,10 +15,10 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 /**
- * GitHub client.
+ * GitHub Issue report client.
  *
  * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
- * @version 3.0.0.1, Mar 24, 2020
+ * @version 3.0.0.2, Apr 24, 2021
  */
 public final class Client {
 
@@ -64,6 +64,7 @@ public final class Client {
         final StringBuilder docBuilder = new StringBuilder();
         final StringBuilder skinBuilder = new StringBuilder();
         final StringBuilder themeBuilder = new StringBuilder();
+        final StringBuilder abolishmentBuilder = new StringBuilder();
 
         System.out.println("Retrieving issues....");
         System.out.println();
@@ -121,6 +122,11 @@ public final class Client {
                         docBuilder.append(liBuilder.toString());
                         count++;
                         break;
+                    case "移除功能":
+                    case "Abolishment":
+                        abolishmentBuilder.append(liBuilder.toString());
+                        count++;
+                        break;
                     default:
                         System.err.println("The label [" + label + ", issue=" + issue.optString("number") + "] is invalid");
                         System.exit(-1);
@@ -158,6 +164,11 @@ public final class Client {
         if (developmentBuilder.length() > 0) {
             System.out.println("### 开发重构\n");
             System.out.println(developmentBuilder.toString());
+        }
+
+        if (abolishmentBuilder.length() > 0) {
+            System.out.println("### 移除功能\n");
+            System.out.println(abolishmentBuilder.toString());
         }
 
         if (bugBuilder.length() > 0) {
