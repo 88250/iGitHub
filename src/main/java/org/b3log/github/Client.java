@@ -91,40 +91,40 @@ public final class Client {
                 switch (label) {
                     case "引入特性":
                     case "Feature":
-                        featureBuilder.append(liBuilder.toString());
+                        featureBuilder.append(liBuilder);
                         count++;
                         break;
                     case "修复缺陷":
                     case "Bug":
-                        bugBuilder.append(liBuilder.toString());
+                        bugBuilder.append(liBuilder);
                         count++;
                         break;
                     case "改进皮肤":
-                        skinBuilder.append(liBuilder.toString());
+                        skinBuilder.append(liBuilder);
                         count++;
                         break;
                     case "改进主题":
-                        themeBuilder.append(liBuilder.toString());
+                        themeBuilder.append(liBuilder);
                         count++;
                         break;
                     case "改进功能":
                     case "Enhancement":
-                        enhancementBuilder.append(liBuilder.toString());
+                        enhancementBuilder.append(liBuilder);
                         count++;
                         break;
                     case "开发重构":
                     case "Refactor":
-                        developmentBuilder.append(liBuilder.toString());
+                        developmentBuilder.append(liBuilder);
                         count++;
                         break;
                     case "文档相关":
                     case "Document":
-                        docBuilder.append(liBuilder.toString());
+                        docBuilder.append(liBuilder);
                         count++;
                         break;
                     case "移除功能":
                     case "Abolishment":
-                        abolishmentBuilder.append(liBuilder.toString());
+                        abolishmentBuilder.append(liBuilder);
                         count++;
                         break;
                     default:
@@ -138,42 +138,42 @@ public final class Client {
 
         if (featureBuilder.length() > 0) {
             System.out.println("### 引入特性\n");
-            System.out.println(featureBuilder.toString());
+            System.out.println(featureBuilder);
         }
 
         if (skinBuilder.length() > 0) {
             System.out.println("### 改进皮肤\n");
-            System.out.println(skinBuilder.toString());
+            System.out.println(skinBuilder);
         }
 
         if (themeBuilder.length() > 0) {
             System.out.println("### 改进主题\n");
-            System.out.println(themeBuilder.toString());
+            System.out.println(themeBuilder);
         }
 
         if (enhancementBuilder.length() > 0) {
             System.out.println("### 改进功能\n");
-            System.out.println(enhancementBuilder.toString());
+            System.out.println(enhancementBuilder);
         }
 
         if (docBuilder.length() > 0) {
             System.out.println("### 文档相关\n");
-            System.out.println(docBuilder.toString());
+            System.out.println(docBuilder);
         }
 
         if (developmentBuilder.length() > 0) {
             System.out.println("### 开发重构\n");
-            System.out.println(developmentBuilder.toString());
+            System.out.println(developmentBuilder);
         }
 
         if (abolishmentBuilder.length() > 0) {
             System.out.println("### 移除功能\n");
-            System.out.println(abolishmentBuilder.toString());
+            System.out.println(abolishmentBuilder);
         }
 
         if (bugBuilder.length() > 0) {
             System.out.println("### 修复缺陷\n");
-            System.out.println(bugBuilder.toString());
+            System.out.println(bugBuilder);
         }
 
         System.out.println(count + " issues totally.");
