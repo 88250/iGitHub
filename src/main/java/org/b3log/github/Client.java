@@ -72,7 +72,7 @@ public final class Client {
         int count = 0;
         while (true) {
             final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/issues?"
-                    + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc&page=" + page);
+                    + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc&page=" + page + "&per_page=100");
             page++;
             httpGet.addHeader("Authorization", "Token " + PAT);
             final HttpResponse response = httpClient.execute(httpGet);
