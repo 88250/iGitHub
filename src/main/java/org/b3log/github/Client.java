@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
  * GitHub Issue report client.
  *
  * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
- * @version 3.0.0.2, Apr 24, 2021
+ * @version 3.0.0.3, Aug 29, 2021
  */
 public final class Client {
 
@@ -134,45 +134,45 @@ public final class Client {
             }
         }
 
-        System.out.println("## v" + getVersion() + " / " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "\n");
+        System.out.println("# v" + getVersion() + " / " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "\n");
 
         if (featureBuilder.length() > 0) {
-            System.out.println("### 引入特性\n");
+            System.out.println("## 引入特性\n");
             System.out.println(featureBuilder);
         }
 
         if (skinBuilder.length() > 0) {
-            System.out.println("### 改进皮肤\n");
+            System.out.println("## 改进皮肤\n");
             System.out.println(skinBuilder);
         }
 
         if (themeBuilder.length() > 0) {
-            System.out.println("### 改进主题\n");
+            System.out.println("## 改进主题\n");
             System.out.println(themeBuilder);
         }
 
         if (enhancementBuilder.length() > 0) {
-            System.out.println("### 改进功能\n");
+            System.out.println("## 改进功能\n");
             System.out.println(enhancementBuilder);
         }
 
         if (docBuilder.length() > 0) {
-            System.out.println("### 文档相关\n");
+            System.out.println("## 文档相关\n");
             System.out.println(docBuilder);
         }
 
         if (developmentBuilder.length() > 0) {
-            System.out.println("### 开发重构\n");
+            System.out.println("## 开发重构\n");
             System.out.println(developmentBuilder);
         }
 
         if (abolishmentBuilder.length() > 0) {
-            System.out.println("### 移除功能\n");
+            System.out.println("## 移除功能\n");
             System.out.println(abolishmentBuilder);
         }
 
         if (bugBuilder.length() > 0) {
-            System.out.println("### 修复缺陷\n");
+            System.out.println("## 修复缺陷\n");
             System.out.println(bugBuilder);
         }
 
