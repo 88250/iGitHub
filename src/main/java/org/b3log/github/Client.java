@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
  * GitHub Issue report client.
  *
  * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
- * @version 3.0.0.2, Apr 24, 2021
+ * @version 3.0.0.3, Mar 28, 2023
  */
 public final class Client {
 
@@ -127,6 +127,11 @@ public final class Client {
                         abolishmentBuilder.append(liBuilder);
                         count++;
                         break;
+                    case "开发相关":
+                    case "Development":
+                        developmentBuilder.append(liBuilder);
+                        count++;
+                        break;
                     default:
                         System.err.println("The label [" + label + ", issue=" + issue.optString("number") + "] is invalid");
                         System.exit(-1);
@@ -156,6 +161,16 @@ public final class Client {
             System.out.println(enhancementBuilder);
         }
 
+        if (abolishmentBuilder.length() > 0) {
+            System.out.println("### 移除功能\n");
+            System.out.println(abolishmentBuilder);
+        }
+
+        if (bugBuilder.length() > 0) {
+            System.out.println("### 修复缺陷\n");
+            System.out.println(bugBuilder);
+        }
+
         if (docBuilder.length() > 0) {
             System.out.println("### 文档相关\n");
             System.out.println(docBuilder);
@@ -166,14 +181,9 @@ public final class Client {
             System.out.println(developmentBuilder);
         }
 
-        if (abolishmentBuilder.length() > 0) {
-            System.out.println("### 移除功能\n");
-            System.out.println(abolishmentBuilder);
-        }
-
-        if (bugBuilder.length() > 0) {
-            System.out.println("### 修复缺陷\n");
-            System.out.println(bugBuilder);
+        if (developmentBuilder.length() > 0) {
+            System.out.println("### 开发相关\n");
+            System.out.println(developmentBuilder);
         }
 
         System.out.println(count + " issues totally.");
