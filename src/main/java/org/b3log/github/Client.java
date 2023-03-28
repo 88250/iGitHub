@@ -61,6 +61,7 @@ public final class Client {
         final StringBuilder featureBuilder = new StringBuilder();
         final StringBuilder enhancementBuilder = new StringBuilder();
         final StringBuilder developmentBuilder = new StringBuilder();
+        final StringBuilder refactorBuilder = new StringBuilder();
         final StringBuilder docBuilder = new StringBuilder();
         final StringBuilder skinBuilder = new StringBuilder();
         final StringBuilder themeBuilder = new StringBuilder();
@@ -114,7 +115,7 @@ public final class Client {
                         break;
                     case "开发重构":
                     case "Refactor":
-                        developmentBuilder.append(liBuilder);
+                        refactorBuilder.append(liBuilder);
                         count++;
                         break;
                     case "文档相关":
@@ -176,9 +177,9 @@ public final class Client {
             System.out.println(docBuilder);
         }
 
-        if (developmentBuilder.length() > 0) {
+        if (refactorBuilder.length() > 0) {
             System.out.println("### 开发重构\n");
-            System.out.println(developmentBuilder);
+            System.out.println(refactorBuilder);
         }
 
         if (developmentBuilder.length() > 0) {
