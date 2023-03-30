@@ -143,47 +143,47 @@ public final class Client {
         System.out.println("## v" + getVersion() + " / " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "\n");
 
         if (featureBuilder.length() > 0) {
-            System.out.println("### 引入特性\n");
+            System.out.println("### Feature\n");
             System.out.println(featureBuilder);
         }
 
         if (skinBuilder.length() > 0) {
-            System.out.println("### 改进皮肤\n");
+            System.out.println("### Theme\n");
             System.out.println(skinBuilder);
         }
 
         if (themeBuilder.length() > 0) {
-            System.out.println("### 改进主题\n");
+            System.out.println("### Theme\n");
             System.out.println(themeBuilder);
         }
 
         if (enhancementBuilder.length() > 0) {
-            System.out.println("### 改进功能\n");
+            System.out.println("### Enhancement\n");
             System.out.println(enhancementBuilder);
         }
 
         if (abolishmentBuilder.length() > 0) {
-            System.out.println("### 移除功能\n");
+            System.out.println("### Abolishment\n");
             System.out.println(abolishmentBuilder);
         }
 
         if (bugBuilder.length() > 0) {
-            System.out.println("### 修复缺陷\n");
+            System.out.println("### Bug\n");
             System.out.println(bugBuilder);
         }
 
         if (docBuilder.length() > 0) {
-            System.out.println("### 文档相关\n");
+            System.out.println("### Document\n");
             System.out.println(docBuilder);
         }
 
         if (refactorBuilder.length() > 0) {
-            System.out.println("### 开发重构\n");
+            System.out.println("### Refactor\n");
             System.out.println(refactorBuilder);
         }
 
         if (developmentBuilder.length() > 0) {
-            System.out.println("### 开发相关\n");
+            System.out.println("### Development\n");
             System.out.println(developmentBuilder);
         }
 
