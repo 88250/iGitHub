@@ -168,7 +168,7 @@ public final class Client {
         }
 
         if (bugBuilder.length() > 0) {
-            System.out.println("### Bug\n");
+            System.out.println("### Bugfix\n");
             System.out.println(bugBuilder);
         }
 
