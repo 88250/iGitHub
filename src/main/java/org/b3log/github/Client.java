@@ -34,8 +34,8 @@ public final class Client {
         ISSUE_STATE = conf.getString("issue.state");
 
         System.out.println("Repository: " + REPOS);
-        System.out.println("Version Num: " + MILESTONE_NUM);
-        System.out.println("Issue State: " + ISSUE_STATE);
+        System.out.println("Version: " + MILESTONE_NUM);
+        System.out.println("Issue state: " + ISSUE_STATE);
 
         if (conf.containsKey("proxy.host") && conf.containsKey("proxy.port")) {
             final String proxyHost = conf.getString("proxy.host");
