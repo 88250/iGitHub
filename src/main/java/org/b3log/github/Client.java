@@ -66,6 +66,7 @@ public final class Client {
         final StringBuilder skinBuilder = new StringBuilder();
         final StringBuilder themeBuilder = new StringBuilder();
         final StringBuilder abolishmentBuilder = new StringBuilder();
+        final StringBuilder breakingBuilder = new StringBuilder();
 
         System.out.println("Retrieving issues....");
         System.out.println();
@@ -128,6 +129,11 @@ public final class Client {
                         abolishmentBuilder.append(liBuilder);
                         count++;
                         break;
+                    case "破坏性变更":
+                    case "Breaking":
+                        breakingBuilder.append(liBuilder);
+                        count++;
+                        break;
                     case "开发相关":
                     case "Development":
                         developmentBuilder.append(liBuilder);
@@ -165,6 +171,11 @@ public final class Client {
         if (abolishmentBuilder.length() > 0) {
             System.out.println("### Abolishment\n");
             System.out.println(abolishmentBuilder);
+        }
+
+        if (breakingBuilder.length() > 0) {
+            System.out.println("### Breaking\n");
+            System.out.println(breakingBuilder);
         }
 
         if (bugBuilder.length() > 0) {
