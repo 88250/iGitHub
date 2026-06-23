@@ -72,9 +72,10 @@ public final class Client {
         System.out.println();
         int page = 1;
         int count = 0;
+        final int pageSize = 100;
         while (true) {
             final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/issues?"
-                    + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc&page=" + page + "&per_page=100");
+                    + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc&page=" + page + "&per_page=" + pageSize);
             page++;
             httpGet.addHeader("Authorization", "Token " + PAT);
             final HttpResponse response = httpClient.execute(httpGet);
@@ -148,6 +149,12 @@ public final class Client {
                         System.err.println("The label [" + label + ", issue=" + issue.optString("number") + "] is invalid");
                         System.exit(-1);
                 }
+
+                System.out.println("Retrieved issue [" + count + "]");
+            }
+
+            if (json.length() < pageSize) {
+                break;
             }
         }
 
