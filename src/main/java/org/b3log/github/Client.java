@@ -149,8 +149,6 @@ public final class Client {
                         System.err.println("The label [" + label + ", issue=" + issue.optString("number") + "] is invalid");
                         System.exit(-1);
                 }
-
-                System.out.println("Retrieved issue [" + count + "]");
             }
 
             if (json.length() < pageSize) {
