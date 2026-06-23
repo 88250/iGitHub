@@ -88,7 +88,12 @@ public final class Client {
 
             for (int i = 0; i < json.length(); i++) {
                 final JSONObject issue = json.getJSONObject(i);
-                final String label = issue.getJSONArray("labels").optJSONObject(0).optString("name");
+                final JSONObject l = issue.getJSONArray("labels").optJSONObject(0);
+                if (null == l) {
+                    System.err.println("The issue [" + issue.optString("html_url") + "] has no label");
+                    System.exit(-1);
+                }
+                final String label = l.optString("name");
                 final StringBuilder liBuilder = new StringBuilder().append("* [").append(issue.getString("title")).append("](").append(issue.getString("html_url")).append(")\n");
                 switch (label) {
                     case "引入特性":
