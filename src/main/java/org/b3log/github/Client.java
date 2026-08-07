@@ -1,16 +1,18 @@
 package org.b3log.github;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.kohsuke.github.GHDirection;
+import org.kohsuke.github.GHIssue;
+import org.kohsuke.github.GHIssueQueryBuilder;
+import org.kohsuke.github.GHIssueState;
+import org.kohsuke.github.GHLabel;
+import org.kohsuke.github.GHMilestone;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
+import org.kohsuke.github.PagedIterable;
 
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -18,14 +20,13 @@ import java.util.ResourceBundle;
  * GitHub Issue report client.
  *
  * @author <a href="https://hacpai.com/member/88250">Liang Ding</a>
- * @version 3.0.0.3, Mar 28, 2023
+ * @version 5.0.0.0, Aug 7, 2026
  */
 public final class Client {
 
     private static final String MILESTONE_NUM;
     private static final String REPOS;
     private static final String ISSUE_STATE;
-    private static String PAT;
 
     static {
         final ResourceBundle conf = ResourceBundle.getBundle("issues");
@@ -41,21 +42,16 @@ public final class Client {
             final String proxyHost = conf.getString("proxy.host");
             final String proxyPort = conf.getString("proxy.port");
             if (!"".equals(proxyHost) && !"".equals(proxyPort)) {
-                System.getProperties().put("proxySet", "true");
-                System.getProperties().put("socksProxyHost", proxyHost);
-                System.getProperties().put("socksProxyPort", proxyPort);
-                System.out.println("Configured proxy [host=" + proxyHost + ", port=" + proxyPort + "]");
+                System.out.println("The proxy is configured in issues.properties [host=" + proxyHost + ", port=" + proxyPort + "], "
+                        + "please configure it in the environment variables HTTPS_PROXY/HTTP_PROXY");
             }
         }
     }
 
     public static void main(final String[] args) throws Exception {
-        PAT = args[0];
-
-        loadLables();
-
-        Runtime.getRuntime().exec("ipconfig /flushdns");
-        final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        final GitHub github = GitHubBuilder.fromEnvironment().build();
+        final GHRepository repo = github.getRepository(REPOS);
+        final GHMilestone milestone = repo.getMilestone(Integer.parseInt(MILESTONE_NUM));
 
         final StringBuilder bugBuilder = new StringBuilder();
         final StringBuilder featureBuilder = new StringBuilder();
@@ -70,93 +66,77 @@ public final class Client {
 
         System.out.println("Retrieving issues....");
         System.out.println();
-        int page = 1;
+        final GHIssueQueryBuilder.ForRepository issueBuilder = repo.queryIssues();
+        issueBuilder.milestone(MILESTONE_NUM);
+        issueBuilder.state(GHIssueState.CLOSED);
+        issueBuilder.direction(GHDirection.ASC);
+        issueBuilder.pageSize(100);
+        final PagedIterable<GHIssue> issues = issueBuilder.list();
         int count = 0;
-        final int pageSize = 100;
-        while (true) {
-            final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/issues?"
-                    + "milestone=" + MILESTONE_NUM + "&state=" + ISSUE_STATE + "&direction=asc&page=" + page + "&per_page=" + pageSize);
-            page++;
-            httpGet.addHeader("Authorization", "Token " + PAT);
-            final HttpResponse response = httpClient.execute(httpGet);
-            HttpEntity entity = response.getEntity();
-            String content = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
-
-            final JSONArray json = new JSONArray(content);
-            if (json.length() < 1) {
-                break;
+        for (final GHIssue issue : issues) {
+            final Collection<GHLabel> labels = issue.getLabels();
+            if (labels.isEmpty()) {
+                System.err.println("The issue [" + issue.getHtmlUrl() + "] has no label");
+                System.exit(-1);
             }
-
-            for (int i = 0; i < json.length(); i++) {
-                final JSONObject issue = json.getJSONObject(i);
-                final JSONObject l = issue.getJSONArray("labels").optJSONObject(0);
-                if (null == l) {
-                    System.err.println("The issue [" + issue.optString("html_url") + "] has no label");
+            final String label = labels.iterator().next().getName();
+            final StringBuilder liBuilder = new StringBuilder().append("* [").append(issue.getTitle()).append("](").append(issue.getHtmlUrl()).append(")\n");
+            switch (label) {
+                case "引入特性":
+                case "Feature":
+                    featureBuilder.append(liBuilder);
+                    count++;
+                    break;
+                case "修复缺陷":
+                case "Bug":
+                    bugBuilder.append(liBuilder);
+                    count++;
+                    break;
+                case "改进皮肤":
+                    skinBuilder.append(liBuilder);
+                    count++;
+                    break;
+                case "改进主题":
+                    themeBuilder.append(liBuilder);
+                    count++;
+                    break;
+                case "改进功能":
+                case "Enhancement":
+                    enhancementBuilder.append(liBuilder);
+                    count++;
+                    break;
+                case "开发重构":
+                case "Refactor":
+                    refactorBuilder.append(liBuilder);
+                    count++;
+                    break;
+                case "文档相关":
+                case "Document":
+                    docBuilder.append(liBuilder);
+                    count++;
+                    break;
+                case "移除功能":
+                case "Abolishment":
+                    abolishmentBuilder.append(liBuilder);
+                    count++;
+                    break;
+                case "破坏性变更":
+                case "Breaking":
+                    breakingBuilder.append(liBuilder);
+                    count++;
+                    break;
+                case "开发相关":
+                case "Development":
+                    developmentBuilder.append(liBuilder);
+                    count++;
+                    break;
+                default:
+                    System.err.println("The label [" + label + ", issue=" + issue.getNumber() + "] is invalid");
                     System.exit(-1);
-                }
-                final String label = l.optString("name");
-                final StringBuilder liBuilder = new StringBuilder().append("* [").append(issue.getString("title")).append("](").append(issue.getString("html_url")).append(")\n");
-                switch (label) {
-                    case "引入特性":
-                    case "Feature":
-                        featureBuilder.append(liBuilder);
-                        count++;
-                        break;
-                    case "修复缺陷":
-                    case "Bug":
-                        bugBuilder.append(liBuilder);
-                        count++;
-                        break;
-                    case "改进皮肤":
-                        skinBuilder.append(liBuilder);
-                        count++;
-                        break;
-                    case "改进主题":
-                        themeBuilder.append(liBuilder);
-                        count++;
-                        break;
-                    case "改进功能":
-                    case "Enhancement":
-                        enhancementBuilder.append(liBuilder);
-                        count++;
-                        break;
-                    case "开发重构":
-                    case "Refactor":
-                        refactorBuilder.append(liBuilder);
-                        count++;
-                        break;
-                    case "文档相关":
-                    case "Document":
-                        docBuilder.append(liBuilder);
-                        count++;
-                        break;
-                    case "移除功能":
-                    case "Abolishment":
-                        abolishmentBuilder.append(liBuilder);
-                        count++;
-                        break;
-                    case "破坏性变更":
-                    case "Breaking":
-                        breakingBuilder.append(liBuilder);
-                        count++;
-                        break;
-                    case "开发相关":
-                    case "Development":
-                        developmentBuilder.append(liBuilder);
-                        count++;
-                        break;
-                    default:
-                        System.err.println("The label [" + label + ", issue=" + issue.optString("number") + "] is invalid");
-                        System.exit(-1);
-                }
-            }
-
-            if (json.length() < pageSize) {
-                break;
             }
         }
 
-        System.out.println("## v" + getVersion() + " / " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "\n");
+        System.out.println("## v" + milestone.getTitle() + " / " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "\n");
 
         if (featureBuilder.length() > 0) {
             System.out.println("### Feature\n");
@@ -209,39 +189,5 @@ public final class Client {
         }
 
         System.out.println(count + " issues totally.");
-    }
-
-    private static JSONArray LABLES;
-
-    private static void loadLables() throws Exception {
-        System.out.println("Loading labels....");
-        final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/labels");
-        httpGet.addHeader("Authorization", "Token " + PAT);
-        final HttpResponse response = httpClient.execute(httpGet);
-        final HttpEntity entity = response.getEntity();
-        final String content = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
-        LABLES = new JSONArray(content);
-    }
-
-    private static String getVersion() throws Exception {
-        final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        final HttpGet httpGet = new HttpGet("https://api.github.com/repos/" + REPOS + "/milestones/" + MILESTONE_NUM);
-        httpGet.addHeader("Authorization", "Token " + PAT);
-        final HttpResponse response = httpClient.execute(httpGet);
-        final HttpEntity entity = response.getEntity();
-        final String content = IOUtils.toString(entity.getContent(), StandardCharsets.UTF_8);
-        final JSONObject milestone = new JSONObject(content);
-        return milestone.optString("title");
-    }
-
-    private static JSONObject getLable(final String labelName) {
-        for (int i = 0; i < LABLES.length(); i++) {
-            final JSONObject label = LABLES.optJSONObject(i);
-            if (label.optString("name").equals(labelName)) {
-                return label;
-            }
-        }
-        return null;
     }
 }
